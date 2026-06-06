@@ -38,7 +38,7 @@ To build the module yourself, you will need Android Studio or the Android SDK.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/TGAdPawner.git
+   git clone https://github.com/op30mmd/TGAdPawner.git
    ```
 2. Open the project in Android Studio or use the command line:
    ```bash
