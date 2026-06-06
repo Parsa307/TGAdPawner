@@ -21,7 +21,7 @@ TGAdPawner is a lightweight and efficient Xposed module designed to remove spons
 - A supported Telegram client:
     - Official Telegram (`org.telegram.messenger`)
     - Plus Messenger (`org.telegram.plus`)
-    - Nekogram (`nekox.messenger`)
+    - Nekogram (`tw.nekomimi.nekogram` or `nekox.messenger`)
 
 ## Installation
 
@@ -38,7 +38,7 @@ To build the module yourself, you will need Android Studio or the Android SDK.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/TGAdPawner.git
+   git clone https://github.com/op30mmd/TGAdPawner.git
    ```
 2. Open the project in Android Studio or use the command line:
    ```bash
@@ -60,4 +60,4 @@ This project is for educational purposes only. Use it at your own risk. The deve
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Apache License 2.0](LICENSE).
