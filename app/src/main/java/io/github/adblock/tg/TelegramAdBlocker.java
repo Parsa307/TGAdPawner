@@ -41,9 +41,10 @@ public class TelegramAdBlocker extends XposedModule {
         hookIsSponsored(cl);
         hookGetSponsoredMessages(cl);
         hookBotAdView(cl);
+        hookExtraSponsoredSurfaces(cl);
 
         // Comment this out in a release build — it's noisy.
-        new AdDiagnostics(this, TAG).run(cl);
+        // new AdDiagnostics(this, TAG).run(cl);
     }
 
     /* ---------- Layer 1: pretend nothing is sponsored ---------- */
@@ -101,6 +102,46 @@ public class TelegramAdBlocker extends XposedModule {
             }
         } catch (Throwable t) {
             log(Log.WARN, TAG, "BotAdView hook failed", t);
+        }
+    }
+
+    private void hookExtraSponsoredSurfaces(ClassLoader cl) {
+        // 1) Master switch — pretend sponsored is globally disabled.
+        safeHookByName(cl, "org.telegram.messenger.MessagesController",
+                "isSponsoredDisabled", chain -> Boolean.TRUE);
+
+        // 2) Channel message-list path: never insert, count is always zero.
+        safeHookByName(cl, "org.telegram.ui.ChatActivity",
+                "getSponsoredMessagesCount", chain -> Integer.valueOf(0));
+        safeHookByName(cl, "org.telegram.ui.ChatActivity",
+                "addSponsoredMessages", chain -> null);   // void: skip body
+
+        // 3) Defensive: if a sponsored cell still gets built, keep it hidden.
+        safeHookByName(cl, "org.telegram.ui.Cells.ChatMessageCell",
+                "setSponsoredMessageVisible", chain -> null);
+
+        // 4) OPTIONAL — also removes the proxy/PSA promo dialog pinned atop the
+        //    chat list. Comment out if you want to keep PSA/proxy sponsors.
+        safeHookByName(cl, "org.telegram.messenger.MessagesController",
+                "isPromoDialog", chain -> Boolean.FALSE);
+    }
+
+    /** Hooks every overload of a method name with one interceptor. */
+    private void safeHookByName(ClassLoader cl, String cls, String method,
+                                XposedInterface.Hooker hooker) {
+        try {
+            Class<?> c = cl.loadClass(cls);
+            boolean found = false;
+            for (java.lang.reflect.Method m : c.getDeclaredMethods()) {
+                if (m.getName().equals(method)) {
+                    hook(m).setPriority(XposedInterface.PRIORITY_HIGHEST)
+                           .intercept(hooker);
+                    found = true;
+                }
+            }
+            log(Log.INFO, TAG, (found ? "Hooked " : "NOT FOUND ") + cls + "#" + method);
+        } catch (Throwable t) {
+            log(Log.WARN, TAG, "hook failed " + cls + "#" + method, t);
         }
     }
 }
