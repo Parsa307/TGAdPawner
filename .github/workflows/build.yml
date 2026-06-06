@@ -43,10 +43,11 @@ jobs:
       with:
         releaseDirectory: app/build/outputs/apk/release
         signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        buildToolsVersion: "35.0.0"
         alias: ${{ secrets.ALIAS }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
+      env:
+        BUILD_TOOLS_VERSION: "35.0.0"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
