@@ -1,0 +1,8 @@
+id=io.github.adblock.tg
+name=Telegram Ad Blocker
+author=you
+version=1.0
+versionCode=1
+minApiVersion=100
+targetApiVersion=101
+staticScope=true
