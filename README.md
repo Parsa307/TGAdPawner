@@ -21,7 +21,8 @@ TGAdPawner is a lightweight and efficient Xposed module designed to remove spons
 - A supported Telegram client:
     - Official Telegram (`org.telegram.messenger`)
     - Plus Messenger (`org.telegram.plus`)
-    - Nekogram (`tw.nekomimi.nekogram` or `nekox.messenger`)
+    - Nekogram (`tw.nekomimi.nekogram`)
+    - Momogram (`momo.gram`)
 
 ## Installation
 
